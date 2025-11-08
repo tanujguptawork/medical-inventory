@@ -1,0 +1,128 @@
+<app-header></app-header>
+
+<div class="dashboard-wrapper">
+
+  <!-- Stats Cards -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-title">Total Medicines</span>
+        <mat-icon class="stat-header-icon">inventory_2</mat-icon>
+      </div>
+      <div class="stat-value">{{ totalMedicines }}</div>
+      <div class="stat-subtitle">Unique items in inventory</div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-header">
+        <span class="stat-title">Total Stock</span>
+        <mat-icon class="stat-header-icon">trending_up</mat-icon>
+      </div>
+      <div class="stat-value">{{ totalStock }}</div>
+      <div class="stat-subtitle">Units across all items</div>
+    </div>
+
+    <div class="stat-card low-stock-card">
+      <div class="stat-header">
+        <span class="stat-title">Low Stock Alert</span>
+        <mat-icon class="stat-header-icon warning">warning</mat-icon>
+      </div>
+      <div class="stat-value warning">{{ lowStockCount }}</div>
+      <div class="stat-subtitle">Items need reordering</div>
+    </div>
+
+    <div class="stat-card expiring-card">
+      <div class="stat-header">
+        <span class="stat-title">Expiring Soon</span>
+        <mat-icon class="stat-header-icon danger">event</mat-icon>
+      </div>
+      <div class="stat-value danger">{{ expiringSoonCount }}</div>
+      <div class="stat-subtitle">Within 90 days</div>
+    </div>
+  </div>
+
+  <!-- Alert Banners -->
+  <div *ngIf="lowStockCount > 0" class="alert-banner low-stock-alert">
+    <mat-icon class="alert-icon">warning</mat-icon>
+    <span class="alert-text">
+      <strong>{{ lowStockCount }} medicines</strong> running low on stock. Consider reordering soon.
+    </span>
+  </div>
+
+  <div *ngIf="expiringSoonCount > 0" class="alert-banner expiring-alert">
+    <mat-icon class="alert-icon">event</mat-icon>
+    <span class="alert-text">
+      <strong>{{ expiringSoonCount }} medicines</strong> expiring within the next 90 days.
+    </span>
+  </div>
+
+  <!-- Categories Section -->
+  <!-- Categories section removed as requested -->
+
+  <!-- Two-column panels: Low Stock and Expiring Soon -->
+  <!-- Two-column panels: Low Stock and Expiring Soon -->
+  <div class="panels-grid">
+    <mat-card class="panel-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="panel-icon warn">warning</mat-icon>
+          Low Stock (Top 5)
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="lowStockMedicines.length === 0" class="empty-mini">No low stock items 🎉</div>
+        <div *ngIf="lowStockMedicines.length > 0" class="mini-list">
+          <div class="mini-row" *ngFor="let m of lowStockMedicines | slice:0:5">
+            <div class="mini-main">
+              <strong>{{ m.name }}</strong>
+              <span class="mini-sub">Batch {{ m.batchNumber }} • {{ m.manufacturer }}</span>
+            </div>
+            <div class="mini-qty danger">{{ m.quantity }}</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="panel-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="panel-icon danger">event</mat-icon>
+          Expiring Soon (Top 5)
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="expiringMedicines.length === 0" class="empty-mini">No items expiring soon</div>
+        <div *ngIf="expiringMedicines.length > 0" class="mini-list">
+          <div class="mini-row" *ngFor="let m of expiringMedicines | slice:0:5">
+            <div class="mini-main">
+              <strong>{{ m.name }}</strong>
+              <span class="mini-sub">{{ m.manufacturer }}</span>
+            </div>
+            <div class="mini-qty warn">{{ m.expiryDate | date:'mediumDate' }}</div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Recent Activity -->
+  <mat-card class="activity-card">
+    <mat-card-header>
+      <mat-card-title>
+        <mat-icon class="panel-icon">history</mat-icon>
+        Recent Activity
+      </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngIf="recentLogs.length === 0" class="empty-mini">No recent changes</div>
+      <div *ngIf="recentLogs.length > 0" class="activity-list">
+        <div class="activity-row" *ngFor="let log of recentLogs">
+          <span class="activity-time">{{ log.timestamp | date:'short' }}</span>
+          <span class="activity-user">{{ log.username }}</span>
+          <span class="activity-action" [ngClass]="log.action">{{ mapAction(log.action) | titlecase }}</span>
+          <span class="activity-entity">{{ log.entityName }} <small>({{ log.entityType }})</small></span>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

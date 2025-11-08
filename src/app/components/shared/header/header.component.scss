@@ -1,0 +1,156 @@
+.header-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 8px rgba(0,0,0,.15);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+}
+
+::ng-deep .mat-mdc-menu-panel {
+  z-index: 2000 !important;
+}
+
+.toolbar-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.logo-icon {
+  font-size: 36px;
+  width: 36px;
+  height: 36px;
+  color: white;
+}
+
+.logo-text {
+  font-size: 22px;
+  font-weight: 600;
+  color: white;
+  letter-spacing: 0.5px;
+}
+
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.right-section button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: white;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  padding: 8px 16px;
+}
+
+.right-section button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+.right-section button mat-icon {
+  font-size: 20px;
+  width: 20px;
+  height: 20px;
+}
+
+.active-link {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  font-weight: 600;
+}
+
+.active-link mat-icon {
+  color: white;
+}
+
+.admin-section {
+  display: flex;
+  gap: 8px;
+  margin-left: 16px;
+  padding-left: 16px;
+  border-left: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.user-button {
+  margin-left: 16px;
+  padding: 8px 12px;
+  border-radius: 24px;
+  background-color: rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: white;
+}
+
+.user-button:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+.user-button mat-icon {
+  color: white;
+}
+
+.username-text {
+  font-weight: 500;
+}
+
+.dropdown-icon {
+  font-size: 20px !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+::ng-deep .user-menu {
+  z-index: 2000 !important;
+}
+
+.user-menu-header {
+  padding: 16px 20px;
+  min-width: 220px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.user-name {
+  font-weight: 600;
+  font-size: 16px;
+  margin: 0;
+  color: white;
+}
+
+.user-role {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 5px 0 0 0;
+  font-weight: 400;
+}
+
+@media (max-width: 768px) {
+  .logo-text {
+    display: none;
+  }
+  
+  .right-section button span {
+    display: none;
+  }
+  
+  .username-text {
+    display: none;
+  }
+}
+

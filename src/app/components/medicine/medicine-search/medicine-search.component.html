@@ -1,0 +1,103 @@
+<app-header></app-header>
+
+<div class="search-container">
+  <div class="search-header">
+    <h1>Search Medicines</h1>
+    <p class="subtitle">Find medicines by name, batch number, manufacturer, or category</p>
+  </div>
+
+  <mat-card class="search-card">
+    <mat-card-content>
+      <div class="search-form">
+        <mat-form-field appearance="outline" class="search-input">
+          <mat-label>Search</mat-label>
+          <input 
+            matInput 
+            [(ngModel)]="searchQuery" 
+            (keyup.enter)="onSearch()"
+            placeholder="Enter search term...">
+          <mat-icon matPrefix>search</mat-icon>
+        </mat-form-field>
+        
+        <div class="search-buttons">
+          <button 
+            mat-raised-button 
+            color="primary" 
+            (click)="onSearch()"
+            [disabled]="isSearching">
+            <mat-icon>search</mat-icon>
+            Search
+          </button>
+          <button 
+            mat-button 
+            (click)="onClearSearch()"
+            [disabled]="isSearching">
+            <mat-icon>clear</mat-icon>
+            Clear
+          </button>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <div *ngIf="isSearching" class="loading">
+    <mat-spinner diameter="40"></mat-spinner>
+    <p>Searching...</p>
+  </div>
+
+  <div *ngIf="hasSearched && !isSearching" class="results-section">
+    <div class="results-header">
+      <h2>Results ({{ searchResults.length }})</h2>
+    </div>
+
+    <div *ngIf="searchResults.length === 0" class="no-results">
+      <mat-icon>search_off</mat-icon>
+      <p>No medicines found</p>
+    </div>
+
+    <div *ngIf="searchResults.length > 0" class="results-grid">
+      <mat-card *ngFor="let medicine of searchResults" class="medicine-card">
+        <mat-card-header>
+          <mat-card-title>{{ medicine.name }}</mat-card-title>
+          <mat-card-subtitle>{{ medicine.manufacturer }}</mat-card-subtitle>
+        </mat-card-header>
+        
+        <mat-card-content>
+          <div class="medicine-info">
+            <div class="info-item">
+              <mat-icon>tag</mat-icon>
+              <span><strong>Batch:</strong> {{ medicine.batchNumber }}</span>
+            </div>
+            <div class="info-item">
+              <mat-icon>category</mat-icon>
+              <span><strong>Category:</strong> {{ medicine.category }}</span>
+            </div>
+            <div class="info-item">
+              <mat-icon>inventory</mat-icon>
+              <span><strong>Quantity:</strong> {{ medicine.quantity }}</span>
+            </div>
+            <div class="info-item">
+              <mat-icon>attach_money</mat-icon>
+              <span><strong>Price:</strong> ₹{{ medicine.price.toFixed(2) }}</span>
+            </div>
+            <div class="info-item">
+              <mat-icon>event</mat-icon>
+              <span><strong>Expiry:</strong> {{ medicine.expiryDate | date:'shortDate' }}</span>
+            </div>
+            <div class="info-item" *ngIf="medicine.location">
+              <mat-icon>location_on</mat-icon>
+              <span><strong>Location:</strong> {{ medicine.location }}</span>
+            </div>
+          </div>
+          
+          <div class="status-section">
+            <mat-chip [color]="getStatusColor(medicine.status)">
+              {{ medicine.status.replace('-', ' ').toUpperCase() }}
+            </mat-chip>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+

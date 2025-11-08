@@ -1,0 +1,106 @@
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { AuditLog } from '../models/audit-log.model';
+import { AuthService } from './auth.service';
+import { AuditLogApiService } from './api/audit-log-api.service';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuditLogService {
+  private readonly auditLogsSubject = new BehaviorSubject<AuditLog[]>([]);
+  public readonly auditLogs$ = this.auditLogsSubject.asObservable();
+  private readonly storageKey = 'audit_logs_data';
+  private readonly useApi = false; // Set to true to use API instead of localStorage
+
+  constructor(
+    private readonly authService: AuthService,
+    private readonly apiService: AuditLogApiService
+  ) {
+    if (this.useApi) {
+      this.loadLogsFromApi();
+    } else {
+      this.loadLogsFromStorage();
+    }
+  }
+
+  async addLog(
+    action: AuditLog['action'],
+    entityType: AuditLog['entityType'],
+    entityId: string,
+    entityName: string,
+    changes?: AuditLog['changes']
+  ): Promise<void> {
+    const user = this.authService.getCurrentUser();
+    const log: AuditLog = {
+      id: this.generateLogId(),
+      action,
+      entityType,
+      entityId,
+      entityName,
+      userId: user?.id || 'anonymous',
+      username: user?.username || 'anonymous',
+      timestamp: new Date(),
+      changes
+    };
+
+    const updatedLogs = [log, ...this.auditLogsSubject.value];
+    this.auditLogsSubject.next(updatedLogs);
+    this.saveLogsToStorage(updatedLogs);
+
+    if (this.useApi) {
+      // API implementation commented out for now
+      // await this.apiService.createLog(log).toPromise();
+    }
+  }
+
+  searchLogs(query: string): Observable<AuditLog[]> {
+    const lowercaseQuery = query.toLowerCase();
+    const filtered = this.auditLogsSubject.value.filter(log =>
+      log.action.toLowerCase().includes(lowercaseQuery) ||
+      log.entityName.toLowerCase().includes(lowercaseQuery) ||
+      log.username.toLowerCase().includes(lowercaseQuery) ||
+      (log.description?.toLowerCase().includes(lowercaseQuery) ?? false)
+    );
+
+    const sorted = [...filtered];
+    sorted.sort((a, b) => 
+      new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+    );
+    
+    return of(sorted);
+  }
+
+  private generateLogId(): string {
+    const randomId = Math.random().toString(36).slice(2, 11);
+    return `log_${Date.now()}_${randomId}`;
+  }
+
+  private loadLogsFromApi(): void {
+    this.loadLogsFromStorage(); // Fallback to localStorage while API is disabled
+  }
+
+  private loadLogsFromStorage(): void {
+    const storedLogs = localStorage.getItem(this.storageKey);
+    if (storedLogs) {
+      try {
+        const logs: AuditLog[] = JSON.parse(storedLogs).map((log: AuditLog) => ({
+          ...log,
+          timestamp: new Date(log.timestamp)
+        }));
+        this.auditLogsSubject.next(logs);
+      } catch (error) {
+        console.error('Error parsing stored logs:', error);
+        this.auditLogsSubject.next([]);
+      }
+    }
+  }
+
+  private saveLogsToStorage(logs: AuditLog[]): void {
+    try {
+      localStorage.setItem(this.storageKey, JSON.stringify(logs));
+    } catch (error) {
+      console.error('Error saving logs to storage:', error);
+    }
+  }
+}

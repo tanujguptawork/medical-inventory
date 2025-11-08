@@ -1,0 +1,47 @@
+.inventory-stats {
+  margin-top: 20px;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.alert-card {
+  border-left: 4px solid;
+}
+
+.alert-card.low-stock {
+  border-left-color: #FF9800;
+}
+
+.alert-card.expired {
+  border-left-color: #F44336;
+}
+
+.alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.alert-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.quantity {
+  font-weight: 600;
+  color: #FF9800;
+}
+
+.expiry {
+  font-weight: 600;
+  color: #F44336;
+}
+

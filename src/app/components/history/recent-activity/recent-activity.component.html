@@ -1,0 +1,31 @@
+<div class="recent-activity-page">
+  <app-header></app-header>
+
+  <div class="page-content">
+    <mat-card class="activity-card">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon class="panel-icon">history</mat-icon>
+          Recent Activity
+        </mat-card-title>
+        <mat-card-subtitle *ngIf="recentLogs.length > 0">
+          Showing last {{ recentLogs.length }} activities
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="recentLogs.length === 0" class="empty-mini">
+          <mat-icon>history</mat-icon>
+          No recent changes
+        </div>
+        <div *ngIf="recentLogs.length > 0" class="activity-list">
+          <div class="activity-row" *ngFor="let log of recentLogs" [ngClass]="log.action">
+            <span class="activity-time">{{ log.timestamp | date:'short' }}</span>
+            <span class="activity-user">{{ log.username }}</span>
+            <span class="activity-action" [ngClass]="log.action">{{ mapAction(log.action) | titlecase }}</span>
+            <span class="activity-entity">{{ log.entityName }} <small>({{ log.entityType }})</small></span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

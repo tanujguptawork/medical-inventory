@@ -1,0 +1,73 @@
+<mat-toolbar color="primary" class="header-toolbar">
+  <div class="toolbar-content">
+    <div class="left-section">
+      <mat-icon class="logo-icon">local_pharmacy</mat-icon>
+      <span class="logo-text">Medicine Inventory</span>
+    </div>
+    
+    <div class="right-section">
+      <button 
+        mat-button 
+        routerLink="/"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{exact: true}">
+        <mat-icon>dashboard</mat-icon>
+        <span>Dashboard</span>
+      </button>
+      <button 
+        mat-button 
+        routerLink="/medicines"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{exact: false}">
+        <mat-icon>medication</mat-icon>
+        <span>Medicines</span>
+      </button>
+      <button 
+        mat-button 
+        routerLink="/search"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{exact: false}">
+        <mat-icon>search</mat-icon>
+        <span>Search</span>
+      </button>
+      <button 
+        mat-button 
+        routerLink="/activity"
+        routerLinkActive="active-link"
+        [routerLinkActiveOptions]="{exact: false}">
+        <mat-icon>history</mat-icon>
+        <span>History</span>
+      </button>
+      
+      <div *ngIf="isAdmin" class="admin-section">
+        <button 
+          mat-button 
+          routerLink="/users"
+          routerLinkActive="active-link"
+          [routerLinkActiveOptions]="{exact: false}">
+          <mat-icon>people</mat-icon>
+          <span>Users</span>
+        </button>
+      </div>
+      
+      <button mat-button [matMenuTriggerFor]="userMenu" class="user-button" type="button">
+        <mat-icon>account_circle</mat-icon>
+        <span class="username-text">{{ currentUser?.username }}</span>
+        <mat-icon class="dropdown-icon">arrow_drop_down</mat-icon>
+      </button>
+      
+      <mat-menu #userMenu="matMenu" class="user-menu">
+        <div class="user-menu-header">
+          <p class="user-name">{{ currentUser?.name || currentUser?.username }}</p>
+          <p class="user-role">{{ currentUser?.role | titlecase }}</p>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-menu-item (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          <span>Logout</span>
+        </button>
+      </mat-menu>
+    </div>
+  </div>
+</mat-toolbar>
+

@@ -1,0 +1,85 @@
+.medicine-list-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.list-header {
+  margin-bottom: 20px;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.header-content h1 {
+  font-size: 32px;
+  font-weight: 500;
+  margin: 0;
+  color: #333;
+}
+
+.filter-card {
+  margin-bottom: 20px;
+}
+
+.search-field {
+  width: 100%;
+}
+
+.table-card {
+  margin-bottom: 20px;
+}
+
+.table-container {
+  overflow-x: auto;
+}
+
+.medicine-table {
+  width: 100%;
+}
+
+.medicine-table th {
+  font-weight: 600;
+  background-color: #f5f5f5;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px;
+  color: #999;
+}
+
+.no-data mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 10px;
+  opacity: 0.3;
+}
+
+.no-data p {
+  margin: 0;
+  font-size: 16px;
+}
+
+::ng-deep .mat-mdc-chip {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .header-content button {
+    width: 100%;
+  }
+}
+

@@ -1,0 +1,34 @@
+<div class="inventory-stats">
+  <h2>Inventory Alerts</h2>
+  
+  <div class="stats-grid">
+    <mat-card class="alert-card low-stock" *ngIf="lowStockMedicines.length > 0">
+      <mat-card-header>
+        <mat-card-title>Low Stock Medicines</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="alert-list">
+          <div *ngFor="let medicine of lowStockMedicines" class="alert-item">
+            <span>{{ medicine.name }}</span>
+            <span class="quantity">Qty: {{ medicine.quantity }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="alert-card expired" *ngIf="expiredMedicines.length > 0">
+      <mat-card-header>
+        <mat-card-title>Expired Medicines</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="alert-list">
+          <div *ngFor="let medicine of expiredMedicines" class="alert-item">
+            <span>{{ medicine.name }}</span>
+            <span class="expiry">{{ medicine.expiryDate | date:'shortDate' }}</span>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
+
